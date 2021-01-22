@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Crop image</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="onClose()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <image-cropper [imageBase64]="image" format="jpeg" (imageCropped)="croppedImage($event)" [maintainAspectRatio]="false"></image-cropper>
+</ion-content>
+<ion-footer class="ion-no-border ion-text-center">
+    <ion-button size="large" fill="outline" (click)="onCropImage()">Done</ion-button>
+</ion-footer>

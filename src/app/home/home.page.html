@@ -1,20 +1,20 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-header *ngIf="!loadedImage">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+        <ion-title size="large">Home</ion-title>
     </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+</ion-header>
+<ion-content>
+    <ion-card *ngIf="!loadedImage" class="ion-text-center" (click)="captureimage()">
+        <ion-card-header>
+            <ion-icon class="cam-icon" name="camera"></ion-icon>
+        </ion-card-header>
+        <ion-card-content> Capture Image </ion-card-content>
+    </ion-card>
+    <ion-card style="height: 95%;" *ngIf="loadedImage">
+        <image-cropper [imageBase64]="loadedImage" format="jpeg" (imageCropped)="croppedImage($event)" [maintainAspectRatio]="false"></image-cropper>
+    </ion-card>
 </ion-content>
+<ion-footer class="ion-no-border ion-text-center ion-padding" *ngIf="loadedImage">
+    <ion-button size="medium" fill="outline" (click)="onCropImage()">Done</ion-button>
+    <ion-button size="medium" color="warning" fill="outline" (click)="onCropCancle()">Cancel</ion-button>
+</ion-footer>

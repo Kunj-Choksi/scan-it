@@ -1,5 +1,7 @@
 {
   "name": "scan it",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

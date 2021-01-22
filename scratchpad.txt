@@ -1,0 +1,42 @@
+/*
+    To download file
+
+    const url = window.URL.createObjectURL(newBlob);
+    this.pdfUrl = url;
+    var anc = document.createElement("a");
+    anc.href = url;
+    anc.download = "Pdf.pdf";
+    anc.click();
+*/
+
+
+/* 
+    For byteArray
+
+    const byteArray = new Uint8Array(atob(responseDate.data.croppedImage.base64.replace("data:image/png;base64,", "")).split("").map((char) => char.charCodeAt(0)));
+
+    var newBlob = new Blob([byteArray], {
+        type: "application/pdf",
+    }); 
+*/
+
+ // Base64 for encoded string
+/* this.modalCtrl
+    .create({
+        component: CropperPage,
+        componentProps: {
+            image: image.dataUrl
+        },
+    })
+    .then((modalComp) => {
+        modalComp.present();
+        return modalComp.onDidDismiss();
+    })
+    .then((responseData) => {
+        console.log(responseData);
+        if (responseData && responseData.data && responseData.data.userCroppedImage) {
+            this.userCroppedImage = responseData.data.userCroppedImage.base64;
+            this.storage.set(this.userCroppedImage);
+        }
+    }); 
+*/
