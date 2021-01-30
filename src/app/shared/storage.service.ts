@@ -5,12 +5,16 @@ import { Storage } from '@ionic/storage';
 import { File } from "@ionic-native/file/ngx";
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { UtilityService } from './utility.service';
+import { BehaviorSubject } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
+
+import { UserImage } from '../models/images.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class StorageService {
-    private storedImages: [{ id: number, date: Date, imageBase64: string, height: number, width: number }];
+    private _storedImages = new BehaviorSubject<UserImage[]>([]);
 
     constructor(
         private storage: Storage,
@@ -22,39 +26,48 @@ export class StorageService {
         this.platform.ready().then(() => {
             if (this.storage.get('imagesInfo')) {
                 this.storage.get('imagesInfo').then((storedData) => {
-                    this.storedImages = storedData || [];
-                    console.log(this.storedImages);
+                    this._storedImages = new BehaviorSubject<UserImage[]>(storedData || []);
                 });
             }
         })
     }
 
-    set(croppedImage: any) {
-        this.storedImages.push({
-            id: Math.floor(Math.random() * 10) + 1,
-            imageBase64: croppedImage.base64,
+    set(base64: string, height: number, width: number) {
+        const newImage: UserImage = {
+            id: new Date().getTime(),
             date: new Date(),
-            height: croppedImage.height,
-            width: croppedImage.width,
-        })
-        this.updateLocalImages();
+            imageBase64: base64,
+            height: height,
+            width: width,
+        }
+        return this._storedImages.pipe(
+            take(1),
+            tap((images) => {
+                this._storedImages.next(images.concat(newImage))
+                this.updateLocalStorage()
+            })
+        )
     }
 
     delete(id: number) {
         console.log(id);
-        const index = this.storedImages.findIndex(x => x.id === id);
-        console.log(index);
-        this.storedImages.splice(index, 1);
-        console.log(this.storedImages);
-        this.updateLocalImages();
-    }
-
-    updateLocalImages() {
-        this.storage.set('imagesInfo', this.storedImages);
+        return this._storedImages.pipe(
+            take(1),
+            tap(images => {
+                this._storedImages.next(images.filter((img) => img.id !== id));
+                this.updateLocalStorage()
+            })
+        )
     }
 
     getAllImage() {
-        return this.storedImages.slice();
+        return this._storedImages.asObservable();
+    }
+
+    updateLocalStorage() {
+        this._storedImages.subscribe(images => {
+            this.storage.set('imagesInfo', images);
+        })
     }
 
     saveToDownloadDir(croppedImage) {

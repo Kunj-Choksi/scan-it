@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Camera } from "@ionic-native/camera/ngx";
 
 import {
     Capacitor,
@@ -7,10 +6,12 @@ import {
     CameraSource,
     CameraResultType,
 } from "@capacitor/core";
-import { ModalController } from "@ionic/angular";
-import { CropperPage } from "../cropper/cropper.page";
+
+const { Toast, App } = Plugins;
+
 import { StorageService } from "../shared/storage.service";
 import { ImageCroppedEvent } from "ngx-image-cropper";
+import { Platform, IonRouterOutlet } from "@ionic/angular";
 
 @Component({
     selector: "app-home",
@@ -23,10 +24,17 @@ export class HomePage implements OnInit {
     public loadedImage: string;
 
     constructor(
-        private camera: Camera,
-        private modalCtrl: ModalController,
-        private storage: StorageService
-    ) { }
+        private storage: StorageService,
+        private platform: Platform,
+        private routerOutlet: IonRouterOutlet
+    ) {
+        this.platform.backButton.subscribeWithPriority(1, () => {
+            alert()
+            if (!this.routerOutlet.canGoBack()) {
+                App.exitApp();
+            }
+        });
+    }
 
     ngOnInit() { }
 
@@ -41,32 +49,12 @@ export class HomePage implements OnInit {
             height: 3120,
             width: 1440,
             resultType: CameraResultType.DataUrl,
-        })
-            .then((image) => {
-                this.loadedImage = image.dataUrl;
-                /* this.modalCtrl
-                    .create({
-                        component: CropperPage,
-                        componentProps: {
-                            image: image.dataUrl
-                        },
-                    })
-                    .then((modalComp) => {
-                        modalComp.present();
-                        return modalComp.onDidDismiss();
-                    })
-                    .then((responseData) => {
-                        if (responseData && responseData.data && responseData.data.userCroppedImage) {
-                            this.userCroppedImage = responseData.data.userCroppedImage.base64;
-                            this.storage.set(this.userCroppedImage);
-                        }
-                    }); */
-            })
-            .catch((err) => {
-                console.error("error");
-                console.log(err);
-            });
-
+        }).then((image) => {
+            this.loadedImage = image.dataUrl;
+        }).catch((err) => {
+            console.error("error");
+            console.log(err);
+        });
     }
 
     croppedImage(event: ImageCroppedEvent) {
@@ -75,8 +63,12 @@ export class HomePage implements OnInit {
 
     onCropImage() {
         if (this.userCroppedImage) {
-            this.storage.set(this.userCroppedImage);
-            this.onCropCancle()
+            this.storage.set(this.userCroppedImage.base64, this.userCroppedImage.height, this.userCroppedImage.width).subscribe(() => {
+                Toast.show({
+                    text: "Saved Cropped Image"
+                })
+                this.onCropCancle()
+            })
         }
     }
 

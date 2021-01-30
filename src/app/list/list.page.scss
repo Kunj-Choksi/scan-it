@@ -1,0 +1,16 @@
+ion-grid {
+    ion-row {
+        ion-col {
+            margin: 10px;
+            .inner {
+                height: 120px;
+                border: 1px dotted #d3d3d3;
+                border-radius: 10px;
+                padding: 3px;
+                ion-img {
+                    height: 110px;
+                }
+            }
+        }
+    }
+}

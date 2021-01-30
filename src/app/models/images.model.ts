@@ -1,6 +1,4 @@
-import { Interface } from "readline";
-
-export interface Image {
+export interface UserImage {
     id: number,
     imageBase64: string,
     date: Date,

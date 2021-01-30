@@ -1,10 +1,10 @@
-<ion-header>
+<ion-header class="ion-padding">
     <ion-toolbar>
         <ion-title size="large">List</ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-    <ion-list>
+<ion-content>
+    <!-- <ion-list>
         <ion-item-sliding *ngFor="let info of savedImages" #slider>
             <ion-item>
                 <ion-label>{{ info.date }}.pdf</ion-label>
@@ -16,13 +16,22 @@
                 <ion-item-option color="secondary" (click)="pdfSave(info, slider)">
                     <ion-icon name="save" slot="icon-only"></ion-icon>
                 </ion-item-option>
-                <ion-item-option color="danger" (click)="delete(info)">
+                <ion-item-option color="danger" (click)="delete(info, slider)">
                     <ion-icon name="trash" slot="icon-only"></ion-icon>
                 </ion-item-option>
             </ion-item-options>
         </ion-item-sliding>
-        <!-- <ion-item *ngFor="let info of savedImages">
+         <ion-item *ngFor="let info of savedImages">
             <ion-img [src]="info.url"></ion-img>
-        </ion-item> -->
-    </ion-list>
+        </ion-item>
+    </ion-list> -->
+    <ion-grid>
+        <ion-row class="ion-padding">
+            <ion-col size="4" *ngFor="let info of savedImages" (click)="onMoreOptions(info)">
+                <div class="inner">
+                    <ion-img [src]="info.url"></ion-img>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
