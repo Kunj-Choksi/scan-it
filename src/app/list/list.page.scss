@@ -4,9 +4,9 @@ ion-title{
 ion-grid {
     ion-row {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         ion-col {
-            margin: 10px;
+            margin: 15px;
             .inner {
                 height: 120px;
                 border: 1px solid #d3d3d3;

@@ -40,7 +40,7 @@
     </ion-list> -->
     <ion-grid>
         <ion-row class="ion-padding">
-            <ion-col size="4" *ngFor="let info of savedImages" ion-button ion-long-press [interval]="500" (pressed)="pressed(info)" [ngClass]="{'selected': info.selected}" (click)="onMoreOptions(info)">
+            <ion-col size="3" *ngFor="let info of savedImages" ion-button ion-long-press [interval]="500" (pressed)="pressed(info)" [ngClass]="{'selected': info.selected}" (click)="onMoreOptions(info)">
                 <div class="inner">
                     <ion-img [src]="info.url"></ion-img>
                     <label>{{ info.date }}.pdf</label>
