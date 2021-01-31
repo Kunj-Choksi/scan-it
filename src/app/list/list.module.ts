@@ -8,12 +8,15 @@ import { ListPageRoutingModule } from './list-routing.module';
 
 import { ListPage } from './list.page';
 
+import { LongPressModule } from "ionic-long-press";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ListPageRoutingModule,
+    LongPressModule
   ],
   declarations: [ListPage]
 })

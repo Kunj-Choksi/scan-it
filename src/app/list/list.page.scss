@@ -1,14 +1,38 @@
+ion-title{
+    font-size: 25px;
+}
 ion-grid {
     ion-row {
+        display: flex;
+        justify-content: space-around;
         ion-col {
             margin: 10px;
             .inner {
                 height: 120px;
-                border: 1px dotted #d3d3d3;
+                border: 1px solid #d3d3d3;
                 border-radius: 10px;
                 padding: 3px;
                 ion-img {
                     height: 110px;
+                    margin-bottom: 10px;
+                }
+                label {
+                    font: 400 12px/16px sans-serif;
+                    margin: 0;
+                    display: block;
+                    overflow: hidden;
+                    -webkit-box-flex: 1;
+                    -webkit-flex: 1;
+                    -ms-flex: 1;
+                    flex: 1;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+            &.selected {
+                .inner {
+                    border: 3px dashed #646161;
+                    opacity: 0.5;
                 }
             }
         }

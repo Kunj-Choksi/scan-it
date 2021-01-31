@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
 import { UserImage } from '../models/images.model';
+import { UserSelectedImage } from '../models/user-images.model';
 
 @Injectable({
     providedIn: 'root'
@@ -50,18 +51,35 @@ export class StorageService {
     }
 
     delete(id: number) {
-        console.log(id);
         return this._storedImages.pipe(
             take(1),
             tap(images => {
                 this._storedImages.next(images.filter((img) => img.id !== id));
-                this.updateLocalStorage()
+                this.updateLocalStorage();
             })
         )
     }
 
     getAllImage() {
         return this._storedImages.asObservable();
+    }
+
+    mergePdf(selections: UserSelectedImage[], name: string) {
+        const nBlob = this.utilityService.imagesToPdfBlob(selections);
+        return this.saveBlobToCachedDir(nBlob, name).then(() => {
+            this.socialSharing.share("Sharing PDF", null, `${this.file.externalCacheDirectory}/${name}`, null);
+        });
+    }
+
+    shareMultipleFiles(images: UserSelectedImage[]) {
+        let imagesName = [];
+        for (let index in images) {
+            let image = images[index];
+            imagesName.push(`${this.file.externalCacheDirectory}/${image.date}.pdf`);
+            const nBlob = this.utilityService.imageToPdfBlob(image);
+            this.saveBlobToCachedDir(nBlob, `${image.date}.pdf`);
+        }
+        return this.socialSharing.share("Sharing PDFs", null, imagesName, null);
     }
 
     updateLocalStorage() {
@@ -77,8 +95,12 @@ export class StorageService {
 
     sharePdf(croppedImage, name: string) {
         const nBlob = this.utilityService.imageToPdfBlob(croppedImage);
-        return this.file.writeFile(this.file.externalCacheDirectory, name, nBlob).then(() => {
+        return this.saveBlobToCachedDir(nBlob, name).then(() => {
             this.socialSharing.share("Sharing PDF", null, `${this.file.externalCacheDirectory}/${name}`, null);
         });
+    }
+
+    saveBlobToCachedDir(blob, name) {
+        return this.file.writeFile(this.file.externalCacheDirectory, name, blob);
     }
 }

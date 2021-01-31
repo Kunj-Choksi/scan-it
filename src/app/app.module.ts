@@ -13,6 +13,7 @@ import { IonicStorageModule } from "@ionic/storage";
 import { File } from "@ionic-native/file/ngx";
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
+import { LongPressModule } from "ionic-long-press";
 
 @NgModule({
     declarations: [AppComponent],
@@ -29,7 +30,8 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         Camera,
         File,
-        SocialSharing
+        SocialSharing,
+        LongPressModule
     ],
     bootstrap: [AppComponent],
 })

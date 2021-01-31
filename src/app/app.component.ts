@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 // import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-import { Plugins, StatusBarStyle } from "@capacitor/core";
+import { Plugins, StatusBarStyle, Capacitor } from "@capacitor/core";
 
 const { StatusBar } = Plugins;
 
@@ -23,12 +23,14 @@ export class AppComponent {
 
     initializeApp() {
         this.platform.ready().then(() => {
-            StatusBar.setBackgroundColor({
-                color: "white"
-            })
-            StatusBar.setStyle({
-                style: StatusBarStyle.Light
-            })
+            if (Capacitor.isPluginAvailable('StatusBar')) {
+                StatusBar.setBackgroundColor({
+                    color: "white"
+                })
+                StatusBar.setStyle({
+                    style: StatusBarStyle.Light
+                })
+            }
 
             this.splashScreen.hide();
         });

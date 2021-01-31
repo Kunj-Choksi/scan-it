@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { jsPDF } from "jspdf";
+import { UserSelectedImage } from '../models/user-images.model';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ export class UtilityService {
 
     constructor() { }
 
-    imageToPdfBlob(image) {
+    imageToPdfBlob(image: UserSelectedImage) {
         let baseImage = image.imageEncoded.replace("data:image/jpeg;base64,", "");
         let convertedPdf = new jsPDF('p', 'mm', 'a4');
 
@@ -19,6 +20,22 @@ export class UtilityService {
         convertedPdf.addImage(baseImage, "JPEG", 0, 0, width, height);
 
         return new Blob([convertedPdf.output('blob')], { type: 'application/pdf' });
+    }
+
+    imagesToPdfBlob(images: UserSelectedImage[]) {
+        let pdf = new jsPDF('p', 'mm', 'a4');
+        for (const index in images) {
+            const image = images[index];
+            let baseImage = image.imageEncoded.replace("data:image/jpeg;base64,", "");
+            var width = pdf.internal.pageSize.getWidth();
+            var height = pdf.internal.pageSize.getHeight();
+            pdf.addImage(baseImage, "JPEG", 5, 5, width - 10, height - 10);
+            if (+index != (images.length - 1)) {
+                pdf.addPage();
+            }
+        }
+
+        return new Blob([pdf.output('blob')], { type: 'application/pdf' })
     }
 
     base64ToBlob(base64Data, contentType) {

@@ -35,6 +35,7 @@
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-x-socialsharing": "^6.0.3",
     "es6-promise-plugin": "^4.2.2",
+    "ionic-long-press": "^2.0.3",
     "js-base64": "^3.6.0",
     "jspdf": "^2.3.0",
     "ngx-image-cropper": "^3.3.2",
