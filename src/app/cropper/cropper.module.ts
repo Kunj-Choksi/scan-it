@@ -8,12 +8,10 @@ import { CropperPageRoutingModule } from "./cropper-routing.module";
 
 import { CropperPage } from "./cropper.page";
 import { ImageCropperModule } from "ngx-image-cropper";
-import { BrowserModule } from "@angular/platform-browser";
 
 @NgModule({
     imports: [
         CommonModule,
-        BrowserModule,
         FormsModule,
         IonicModule,
         CropperPageRoutingModule,

@@ -25,7 +25,7 @@ export class AppComponent {
         this.platform.ready().then(() => {
             if (Capacitor.isPluginAvailable('StatusBar')) {
                 StatusBar.setBackgroundColor({
-                    color: "white"
+                    color: "#92cad4"
                 })
                 StatusBar.setStyle({
                     style: StatusBarStyle.Light

@@ -1,7 +1,41 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>Landing</ion-title>
+        <ion-buttons slot="start" *ngIf="currentViewMode === 'selecting'">
+            <ion-button (click)="deSelectAll()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Scanner</ion-title>
+        <ion-buttons slot="end" *ngIf="currentViewMode === 'selecting'">
+            <ion-button (click)="selectAll()">
+                <ion-icon name="checkmark-done-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="openOptionMenu()">
+                <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content>
+    <div class="toast-box {{ currentViewMode === 'selecting' ? 'open' : '' }}">
+        <div class="toast-box-inner">
+            <span>{{ selectedImagesCount }} selected</span>
+        </div>
+    </div>
+    <ion-grid *ngIf="savedImages.length > 0">
+        <ion-row class="ion-padding">
+            <ion-col size="3" *ngFor="let info of savedImages" ion-button ion-long-press [interval]="500" (pressed)="pressed(info)" [ngClass]="{'selected': info.selected}" (click)="onMoreOptions(info)">
+                <div class="inner">
+                    <ion-img [src]="info.url"></ion-img>
+                    <label>{{ info.date }}.pdf</label>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div class="default-state" *ngIf="savedImages.length == 0"> Click on <ion-icon class="inline-icon" name="camera"></ion-icon> icon to add. </div>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="captureimage()">
+            <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>

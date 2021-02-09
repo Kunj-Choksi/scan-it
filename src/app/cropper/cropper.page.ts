@@ -5,8 +5,7 @@ import { ImageCroppedEvent } from "ngx-image-cropper";
 @Component({
     selector: "app-cropper",
     templateUrl: "./cropper.page.html",
-    styleUrls: ["./cropper.page.scss"],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ["./cropper.page.scss"]
 })
 
 export class CropperPage implements OnInit {
@@ -28,5 +27,7 @@ export class CropperPage implements OnInit {
         this.modalCtrl.dismiss({ croppedImage: this.userCroppedImage });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.image = this.image
+    }
 }
